@@ -32,7 +32,8 @@ A professional ASP.NET Core MVC web application to manage employees and track ta
 ## 📸 Screenshots
 
 ### 1️⃣ Login Page (User Authentication)
-<img width="1735" height="752" alt="Screenshot 2025-12-01 182157" src="https://github.com/user-attachments/assets/960fdc34-ed25-4bfb-a619-83bc2f1a5151" />
+<img width="1511" height="784" alt="Screenshot 2025-12-01 183028" src="https://github.com/user-attachments/assets/25e97893-72b0-4347-8ed7-579e4cb3899e" />
+
 
 
 ### 2️⃣ Dashboard – Admin View
