@@ -1,0 +1,53 @@
+@model EmployeeTaskManager.Models.Employee
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<h1>Employee Details</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+
+    <dt class="col-sm-3">Department</dt>
+    <dd class="col-sm-9">@Model.Department</dd>
+
+    <dt class="col-sm-3">Date Of Joining</dt>
+    <dd class="col-sm-9">@Model.DateOfJoining.ToShortDateString()</dd>
+</dl>
+
+<h4 class="mt-4">Assigned Tasks</h4>
+@if (Model.Tasks == null || !Model.Tasks.Any())
+{
+    <p>No tasks assigned.</p>
+}
+else
+{
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var t in Model.Tasks)
+        {
+            <tr>
+                <td>@t.Title</td>
+                <td>@(t.DueDate?.ToShortDateString() ?? "-")</td>
+                <td>@t.Status</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

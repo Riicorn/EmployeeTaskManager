@@ -1,0 +1,85 @@
+@model IEnumerable<EmployeeTaskManager.Models.TaskItem>
+@using EmployeeTaskManager.Models
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Tasks</h1>
+    <a class="btn btn-primary" asp-action="Create">+ Add Task</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <select name="status" class="form-select">
+            <option value="">All Status</option>
+            @foreach (EmployeeTaskManager.Models.TaskStatus status in Enum.GetValues(typeof(EmployeeTaskManager.Models.TaskStatus)))
+            {
+            <option value="@status" selected="@(ViewBag.Status != null && ViewBag.Status.ToString() == status.ToString() ? "selected" : null)">
+                  @status
+            </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select name="employeeId" class="form-select">
+            <option value="">All Employees</option>
+            @foreach (var emp in ViewBag.Employees)
+            {
+                <option value="@emp.Id" selected="@(ViewBag.EmployeeId != null && (int)ViewBag.EmployeeId == emp.Id ? "selected" : null)">
+                    @emp.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">Filter</button>
+    </div>
+</form>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Employee</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Employee?.Name</td>
+            <td>@(item.DueDate?.ToShortDateString() ?? "-")</td>
+            <td>@item.Status</td>
+            <td class="text-end">
+                @if (User.IsInRole("Admin"))
+{
+                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+}
+
+    else
+    {
+ <!-- Only status update allowed -->
+                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <select name="status" class="form-select form-select-sm d-inline w-auto">
+                        @foreach (var s in Enum.GetValues(typeof(EmployeeTaskManager.Models.TaskStatus)))
+                {
+                        <option value="@s" selected="@(s.ToString() == item.Status.ToString())">@s</option>
+                }
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                </form>
+    }
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
